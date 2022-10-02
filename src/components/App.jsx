@@ -15,7 +15,7 @@ export const App = () => {
       }}
     >
       
-      <Counter title="Please leave feedback" />
+      <Counter title="Please leave feedback"  />
     </div>
   );
 };

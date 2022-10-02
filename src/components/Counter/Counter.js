@@ -14,8 +14,17 @@ export class Counter extends Component {
   //     value: 2,
   //   };
   // }
+
+  static defaultProps = {
+    initialGood: 0,
+  };
+  
+  static propTypes = {
+    good: PropTypes.number.isRequired,
+  }
+  
     state = {
-    good: 0,
+    good: this.props.initialGood,
     neutral: 0,
     bad: 0
   }
