@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 
 import React, { Component } from "react";
 
-import { Title, ListCounter, ItemCounter, Btn, ListStatistics } from './Counter.styled';
+import { FeedbackOptions } from 'components/FeedbackOptions/FeedbackOptions';
+import { Title, ListStatistics } from './Counter.styled';
 
 
 export class Counter extends Component {
@@ -17,6 +18,8 @@ export class Counter extends Component {
 
   static defaultProps = {
     initialGood: 0,
+    initialNeutral: 0,
+    initialBad: 0,
   };
   
   static propTypes = {
@@ -25,57 +28,63 @@ export class Counter extends Component {
   
     state = {
     good: this.props.initialGood,
-    neutral: 0,
-    bad: 0
+    neutral: this.props.initialNeutral,
+    bad: this.props.initialBad,
   }
 
-  handleIncrement = evt => {
+  handleFeedbackGood = evt => {
     this.setState(prevState => ({
       good: Math.max(prevState.good +1, 0)
     }));
-    console.log("Increment button was clicked!", evt); // работает
-    console.log("this.props: ", this.props); // work
+    
   };
 
   
-  handleIncrementNeutral = evt => {
+  handleFeedbackNeutral = evt => {
     this.setState(prevState => ({
       neutral: Math.max(prevState.neutral +1, 0)
     }));
-    console.log("Decrement button was clicked!", evt); // работает
-    console.log("this.props: ", this.props); // work
+    
   }
 
-  handleFeedBackBad = evt => {
+  handleFeedbackBad = evt => {
     this.setState(prevState => ({
       bad: Math.max(prevState.bad +1, 0)
-    }));
-    console.log("Decrement button was clicked!", evt); // работает
-    console.log("this.props: ", this.props); // work
+    }));  
+    
   }
+
+
+  onTotalFeedback = () => Object.values(this.state).reduce((total, value) => {
+    return total + value
+  }, 0);
+
+  onPositiveFeedback = () => {
+    let positiveFeedback = 0;
+    const { good } = this.state;
+    const totalFeedback = this.onTotalFeedback();
+
+    if (totalFeedback ) {
+       positiveFeedback = Math.round((good * 100) / totalFeedback) + '%';
+    }
+    return positiveFeedback;
+  }
+
   render() {
-    const { step } = this.props;
+    // const { good, neutral, bad } = this.props;
 
     return (
       <div>
+        
         <Title>Please leave feedback</Title>
-      <ListCounter>
-        <ItemCounter>
-        <Btn type="button" onClick={this.handleIncrement}>
-          Good{step}
-          </Btn>
-          </ItemCounter>  
-          <ItemCounter>
-        <Btn type="button" onClick={this.handleIncrementNeutral}>
-          Neutral{step}
-            </Btn>
-          </ItemCounter>
-          <ItemCounter>
-        <Btn type="button" onClick={this.handleFeedBackBad}>
-          Bad    {step}
-          </Btn>
-        </ItemCounter>  
-        </ListCounter>
+      
+
+        <FeedbackOptions
+          onGood={this.handleFeedbackGood}
+          onNeutral={this.handleFeedbackNeutral}
+          onBad={this.handleFeedbackBad}
+        />
+
         <ListStatistics>
           <h3>
             Statistics
@@ -90,10 +99,10 @@ export class Counter extends Component {
             <span>Bad:{this.state.bad}</span>
           </li>
           <li>
-            <span>Total:</span>
+            <span>Total:{this.onTotalFeedback()}</span>
           </li>
           <li>
-            <span>Positive feedback:</span>
+            <span>Positive feedback: {this.onPositiveFeedback()}</span>
           </li>
         </ListStatistics>
         
