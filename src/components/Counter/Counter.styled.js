@@ -32,7 +32,13 @@ background: rgb(144, 238, 144, 0.3);
 
 padding: 5px 10px;
 
+cursor: pointer;
 box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    &:hover,
+    &:focus {
+       background: rgb(170, 241, 60, 0.7);
+       color: rgb(250, 250, 250);
+    }
 `
 
 export const ListStatistics = styled.ul`

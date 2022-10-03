@@ -22,3 +22,4 @@ export const FeedbackOptions = ({onGood, onNeutral, onBad}) => (
         </ItemCounter>  
         </ListCounter>
 )
+

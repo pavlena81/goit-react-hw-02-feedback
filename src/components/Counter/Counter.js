@@ -1,21 +1,16 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from "react";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+import { Sections } from 'components/Sections/Sections';
 import { FeedbackOptions } from 'components/FeedbackOptions/FeedbackOptions';
-import { Title, ListStatistics } from './Counter.styled';
+import { Statistics } from 'components/Statistics/Statistics';
+
 
 
 export class Counter extends Component {
-  /* ... */
-  // constructor() {
-  //   super();
-
-  //   this.state = {
-  //     value: 2,
-  //   };
-  // }
-
+  
   static defaultProps = {
     initialGood: 0,
     initialNeutral: 0,
@@ -71,50 +66,39 @@ export class Counter extends Component {
   }
 
   render() {
-    // const { good, neutral, bad } = this.props;
-
+    
     return (
-      <div>
+      <div>       
         
-        <Title>Please leave feedback</Title>
-      
+      <Sections
+          title={'Please leave feedback'}
+        >
 
         <FeedbackOptions
           onGood={this.handleFeedbackGood}
           onNeutral={this.handleFeedbackNeutral}
           onBad={this.handleFeedbackBad}
         />
-
-        <ListStatistics>
-          <h3>
-            Statistics
-          </h3>
-          <li>
-            <span>Good:{this.state.good}</span>
-          </li>
-          <li>
-            <span>Neutral:{this.state.neutral}</span>
-          </li>
-          <li>
-            <span>Bad:{this.state.bad}</span>
-          </li>
-          <li>
-            <span>Total:{this.onTotalFeedback()}</span>
-          </li>
-          <li>
-            <span>Positive feedback: {this.onPositiveFeedback()}</span>
-          </li>
-        </ListStatistics>
         
-        
-        
+        <Sections
+            title={'Statistics'}>
+            {this.onTotalFeedback() ? (
+            <Statistics
+          Good={this.state.good}
+          Neutral={this.state.neutral}
+          Bad={this.state.bad}
+          Total={this.onTotalFeedback()}
+          positivePercentage={this.onPositiveFeedback()}  
+        />            
+            ) : (
+             Notify.info('There is no feedback'))      
+          }             
+        </Sections>             
+          
+      </Sections>
       </div>
     );
   }
 }
 
-
-// Counter.PropTypes = {
-//   step: PropTypes.number.isRequired,
-// }
 
