@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import React, { Component } from "react";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -10,47 +10,22 @@ import { Statistics } from 'components/Statistics/Statistics';
 
 
 export class Counter extends Component {
-  
-  static defaultProps = {
-    initialGood: 0,
-    initialNeutral: 0,
-    initialBad: 0,
-  };
-  
-  static propTypes = {
-    good: PropTypes.number.isRequired,
-  }
-  
     state = {
-    good: this.props.initialGood,
-    neutral: this.props.initialNeutral,
-    bad: this.props.initialBad,
+    good: 0,
+    neutral: 0,
+    bad: 0,
   }
-
-  handleFeedbackGood = evt => {
-    this.setState(prevState => ({
-      good: Math.max(prevState.good +1, 0)
-    }));
-    
-  };
-
+ 
+  onHandleFeedback = option => {
+   
+    this.setState(prevState => {
+      return { [option]: prevState[option] + 1 }
+    })
+  }
   
-  handleFeedbackNeutral = evt => {
-    this.setState(prevState => ({
-      neutral: Math.max(prevState.neutral +1, 0)
-    }));
-    
-  }
-
-  handleFeedbackBad = evt => {
-    this.setState(prevState => ({
-      bad: Math.max(prevState.bad +1, 0)
-    }));  
-    
-  }
-
-
-  onTotalFeedback = () => Object.values(this.state).reduce((total, value) => {
+  
+  onTotalFeedback = () => Object.values(this.state)
+    .reduce((total, value) => {
     return total + value
   }, 0);
 
@@ -68,22 +43,18 @@ export class Counter extends Component {
   render() {
     
     return (
-      <div>       
+    <div>       
         
-      <Sections
-          title={'Please leave feedback'}
-        >
+      <Sections title={'Please leave feedback'} >
 
         <FeedbackOptions
-          onGood={this.handleFeedbackGood}
-          onNeutral={this.handleFeedbackNeutral}
-          onBad={this.handleFeedbackBad}
+            options={Object.keys(this.state)}             
+            onHandleFeedback={this.onHandleFeedback}
         />
-        
-        <Sections
-            title={'Statistics'}>
+      </Sections> 
+      <Sections title={'Statistics'}>
             {this.onTotalFeedback() ? (
-            <Statistics
+        <Statistics
           Good={this.state.good}
           Neutral={this.state.neutral}
           Bad={this.state.bad}
@@ -93,10 +64,9 @@ export class Counter extends Component {
             ) : (
              Notify.info('There is no feedback'))      
           }             
-        </Sections>             
-          
+                 
       </Sections>
-      </div>
+    </div>
     );
   }
 }
