@@ -5,13 +5,14 @@ import { Title } from '../Counter/Counter.styled';
 
 export const Sections = ({ title, children }) => (
     <>
-        <Title>{title}</Title>
+            {title && <Title>{title}</Title>}
             {children}
     </>    
 )
 
 
 Sections.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
     
 }

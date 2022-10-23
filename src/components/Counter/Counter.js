@@ -34,10 +34,10 @@ export class Counter extends Component {
     const { good } = this.state;
     const totalFeedback = this.onTotalFeedback();
 
-    if (totalFeedback ) {
-       positiveFeedback = Math.round((good * 100) / totalFeedback) + '%';
+    if (totalFeedback > 0) {
+      positiveFeedback = Math.round((good * 100) / totalFeedback) ;
     }
-    return positiveFeedback;
+    return `${positiveFeedback}%`;
   }
 
   render() {
